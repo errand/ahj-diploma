@@ -1,4 +1,4 @@
-AHJ. Chaos Organizer
+# Дипломное задание к курсу «Продвинутый JavaScript в браузере». Chaos Organizer
 ---
 
 
