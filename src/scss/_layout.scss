@@ -6,7 +6,7 @@ html, body {
 /* Firefox */
 * {
   scrollbar-width: auto;
-  scrollbar-color: gainsboro;
+  scrollbar-color: $grey-100;
 }
 
 /* Chrome, Edge, and Safari */
@@ -15,13 +15,13 @@ html, body {
 }
 
 *::-webkit-scrollbar-track {
-  background: gainsboro;
+  background: $grey-100;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #c2185b;
+  background-color: $blue-200;
   border-radius: 5px;
-  border: 3px solid gainsboro;
+  border: 3px solid $grey-100;
 }
 
 body {
@@ -36,6 +36,14 @@ body {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+}
+
+.flex {
+  display: flex;
+
+  &.between {
+    justify-content: space-between;
+  }
 }
 
 #chatContainer {
@@ -61,41 +69,10 @@ body {
   margin-bottom: 1rem;
   padding: 0.5rem;
 
-  .post {
-    padding: 0.25rem;
-    border-radius: 3px;
-    margin-bottom: 0.5rem;
-    background: #d1e1f1;
-    align-self: flex-start;
-
-    &.host {
-      background: #ececec;
-      align-self: flex-end;
-
-      .post--header{
-        justify-content: flex-end;
-      }
-      .post--content {
-        text-align: right;
-      }
-    }
-
-    &--header {
-      display: flex;
-      font-size: 0.8rem;
-      opacity: 0.7;
-      margin-bottom: 0.25rem;
-    }
-
-    &--author {
-      margin-right: 0.5rem;
-      font-weight: bold;
-    }
-  }
 }
 
 .main-header {
-  background-color: #c2185b;
+  background-color: $blue-300;
   padding-top: 1rem;
   padding-bottom: 1rem;
   margin-bottom: 2rem;

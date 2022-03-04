@@ -1,4 +1,5 @@
 @import "~normalize.css/normalize.css";
+@import "vars";
 @import 'layout';
 @import 'components/post';
 
@@ -15,7 +16,7 @@ body {
   position: relative;
   font-size: 16px;
   height: 100%;
-  background-color: gainsboro;
+  background-color: $grey-100;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -32,4 +33,8 @@ body {
   overflow: hidden;
   clip: rect(0,0,0,0);
   border: 0;
+}
+
+a {
+  color: inherit;
 }
