@@ -1,0 +1,24 @@
+.post{
+  display: flex;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3.5px;
+  transition: opacity 0.3s linear, height 0.3s linear;
+
+  .content {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  &.show {
+    opacity: 1;
+    height: 53px;
+  }
+}
