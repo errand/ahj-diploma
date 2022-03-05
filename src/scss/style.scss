@@ -2,6 +2,7 @@
 @import "vars";
 @import 'layout';
 @import 'components/post';
+@import "forms";
 
 *, ::after, ::before {
   box-sizing: border-box;
@@ -14,6 +15,7 @@ html, body {
 
 body {
   position: relative;
+  overflow: hidden;
   font-size: 16px;
   height: 100%;
   background-color: $grey-100;
