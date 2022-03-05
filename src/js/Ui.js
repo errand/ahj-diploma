@@ -10,14 +10,28 @@ export default class Ui {
       throw new Error('container is not HTMLElement');
     }
     this.container = container;
+    this.form = this.container.querySelector('.form');
+    this.texarea = this.form.querySelector('.form-textarea textarea');
+    this.sendButton = this.form.querySelector('[data-id="send"]');
+    this.audioButton = this.form.querySelector('[data-id="audio"]');
   }
 
   drawUi() {
     this.checkBinding();
-    const chatSection = document.createElement('div');
-    chatSection.classList.add('tickets');
-    this.container.appendChild(chatSection);
-    this.chatSection = chatSection;
+    this.texarea.setAttribute('style', `height:${this.texarea.scrollHeight}px;overflow-y:hidden;`);
+    this.texarea.addEventListener('input', (e) => this.onInput(e));
+  }
+
+  onInput(e) {
+    if (this.texarea.value.trim() === '') {
+      this.sendButton.style.display = 'none';
+      this.audioButton.style.display = 'block';
+    } else {
+      this.audioButton.style.display = 'none';
+      this.sendButton.style.display = 'block';
+    }
+    this.texarea.style.height = 'auto';
+    this.texarea.style.height = `${this.texarea.scrollHeight}px`;
   }
 
   checkBinding() {

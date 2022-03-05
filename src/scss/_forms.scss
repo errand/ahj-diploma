@@ -30,10 +30,15 @@ button {
     height: 32px;
     padding: 0;
     color: $grey-200;
+    font-size: 1.5rem;
     &:hover {
       color: darken($grey-200, 10)
     }
   }
+}
+
+[data-id="send"] {
+  display: none;
 }
 
 
@@ -65,7 +70,7 @@ button {
 
 .form {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   background: #fff;
   border-radius: 0 0 3px 3px;
@@ -80,6 +85,7 @@ button {
       padding: 0.5rem;
       border: none;
       outline: none;
+      resize: none;
     }
   }
 }

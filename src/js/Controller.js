@@ -14,7 +14,7 @@ export default class Controller {
 
   init() {
     this.ui.drawUi();
-    this.subscribeStream();
+    // this.subscribeStream();
   }
 
   subscribeStream() {
