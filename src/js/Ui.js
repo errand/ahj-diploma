@@ -1,8 +1,11 @@
+import Methods from './API/Methods';
+
 export default class Ui {
   constructor() {
     this.container = null;
     this.messages = null;
     this.chatSection = null;
+    this.methods = new Methods();
   }
 
   bindToDOM(container) {
@@ -19,19 +22,9 @@ export default class Ui {
   drawUi() {
     this.checkBinding();
     this.texarea.setAttribute('style', `height:${this.texarea.scrollHeight}px;overflow-y:hidden;`);
-    this.texarea.addEventListener('input', (e) => this.onInput(e));
-  }
-
-  onInput(e) {
-    if (this.texarea.value.trim() === '') {
-      this.sendButton.style.display = 'none';
-      this.audioButton.style.display = 'block';
-    } else {
-      this.audioButton.style.display = 'none';
-      this.sendButton.style.display = 'block';
-    }
-    this.texarea.style.height = 'auto';
-    this.texarea.style.height = `${this.texarea.scrollHeight}px`;
+    this.methods.getAllPosts(request => {
+      console.log(request.response);
+    });
   }
 
   checkBinding() {

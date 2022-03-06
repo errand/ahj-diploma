@@ -1,39 +1,40 @@
-import { ajax } from 'rxjs/ajax';
-import { interval, of } from 'rxjs';
-import { map, switchMap, catchError } from 'rxjs/operators';
-
-import Post from './Post';
+import Methods from './API/Methods';
 
 export default class Controller {
   constructor(ui) {
     this.ui = ui;
-    this.messages = new Set();
-    this.URL = 'https://errand-ahj-rxjs.herokuapp.com/messages/unread';
-    // this.URL = 'http://localhost:7070/messages/unread';
+    this.methods = new Methods();
   }
 
   init() {
     this.ui.drawUi();
-    // this.subscribeStream();
+    this.addEventListeners();
   }
 
-  subscribeStream() {
-    const getRequest = ajax.getJSON(this.URL);
-    this.messagesStream$ = interval(2000)
-      .pipe(
-        switchMap(() => getRequest.pipe(
-          map((response) => response.messages.filter(
-            message => !this.messages.has(message.id),
-          )),
-          catchError(err => of(false)),
-        )),
-      )
+  addEventListeners() {
+    this.ui.texarea.addEventListener('input', e => this.onInputText(e));
+    this.ui.sendButton.addEventListener('click', e => this.onSendButtonClick(e));
+  }
 
-      .subscribe((response) => {
-        response.forEach(el => {
-          const post = new Post(el);
-          this.ui.chatSection.prepend(post.create());
-        });
+  onInputText(e) {
+    if (this.ui.texarea.value.trim() === '') {
+      this.ui.sendButton.style.display = 'none';
+      this.ui.audioButton.style.display = 'block';
+    } else {
+      this.ui.audioButton.style.display = 'none';
+      this.ui.sendButton.style.display = 'block';
+    }
+    this.ui.texarea.style.height = 'auto';
+    this.ui.texarea.style.height = `${this.ui.texarea.scrollHeight}px`;
+  }
+
+  onSendButtonClick(e) {
+    e.preventDefault();
+    if (this.ui.texarea.value.trim() !== '') {
+      const text = this.ui.texarea.value;
+      this.methods.createPost({ text: this.ui.texarea.value }, request => {
+        console.log(request.response);
       });
+    }
   }
 }
