@@ -1,0 +1,38 @@
+#loader {
+  position: absolute;
+  opacity: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  transition: opacity 0.3s;
+
+  &.hide {
+    opacity: 0;
+  }
+
+  &:before{
+    display: inline-block;
+    content: '';
+    width: 6rem;
+    height: 6rem;
+    border: 6px solid #026aa7;
+    border-top: 16px solid #026aa7;
+    border-radius: 100%;
+    margin: auto;
+    animation: spin 1s infinite linear;
+    z-index: 5;
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

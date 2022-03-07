@@ -22,7 +22,7 @@ export default class Methods {
     return fetcher(options);
   }
 
-  createPost(data, callback) {
+  createTextPost(data, callback) {
     const options = {
       method: 'POST',
       query: 'api/messages/add',

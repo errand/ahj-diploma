@@ -1,16 +1,15 @@
 .post{
-  display: flex;
+  display: inline-block;
   opacity: 0;
-  height: 0;
-  overflow: hidden;
-  align-items: center;
-  justify-content: space-around;
-  padding: 1rem;
+  padding: 0.25rem;
   margin-bottom: 1rem;
   background: #fff;
-  border: 1px solid #ccc;
   border-radius: 3.5px;
   transition: opacity 0.3s linear, height 0.3s linear;
+
+  &.host {
+    align-self: flex-end;
+  }
 
   .content {
     padding-right: 1rem;
@@ -19,6 +18,5 @@
 
   &.show {
     opacity: 1;
-    height: 53px;
   }
 }

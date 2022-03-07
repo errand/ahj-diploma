@@ -1,4 +1,5 @@
 import Methods from './API/Methods';
+import Socket from './API/Socket';
 
 export default class Controller {
   constructor(ui) {
@@ -31,10 +32,19 @@ export default class Controller {
   onSendButtonClick(e) {
     e.preventDefault();
     if (this.ui.texarea.value.trim() !== '') {
-      const text = this.ui.texarea.value;
-      this.methods.createPost({ text: this.ui.texarea.value }, request => {
-        console.log(request.response);
+      this.methods.createTextPost({ text: this.ui.texarea.value, host: true }, request => {
+        this.ui.insertPostToDOM(request.response);
+        this.ui.texarea.value = '';
+        this.ui.texarea.style.height = '';
       });
     }
+  }
+
+  createUser(data) {
+    this.methods.createUser(data, response => {
+      this.currentUser = response;
+      this.socket = new Socket(this.currentUser);
+      this.socket.init();
+    });
   }
 }

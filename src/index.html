@@ -28,18 +28,23 @@
   <div class="container" id="botContainer">
     <div class="row main-row">
       <main class="messages--wrapper" data-id="dropzone">
+        <header>
+          <form id="search_form"></form>
+        </header>
         <div class="messages">
 
         </div>
-        <form class="form" data-id="form">
-          <button class="btn btn-icon" data-id="attachment"><i class="fa-solid fa-paperclip"></i></button>
-          <div class="form-control form-textarea">
-            <textarea data-id="text" rows="1" placeholder="Введите текст..."></textarea>
-          </div>
-          <button class="btn btn-icon" data-id="emoji"><i class="fa-solid fa-face-smile"></i></button>
-          <button class="btn btn-icon" data-id="audio"><i class="fa-solid fa-microphone"></i></button>
-          <button class="btn btn-icon" data-id="send"><i class="fa-solid fa-rocket"></i></button>
-        </form>
+        <footer>
+          <form class="form" data-id="form">
+            <button class="btn btn-icon" data-id="attachment"><i class="fa-solid fa-paperclip"></i></button>
+            <div class="form-control form-textarea">
+              <textarea data-id="text" rows="1" placeholder="Введите текст..."></textarea>
+            </div>
+            <button class="btn btn-icon" data-id="emoji"><i class="fa-solid fa-face-smile"></i></button>
+            <button class="btn btn-icon" data-id="audio"><i class="fa-solid fa-microphone"></i></button>
+            <button class="btn btn-icon" data-id="send"><i class="fa-solid fa-rocket"></i></button>
+          </form>
+        </footer>
       </main>
       <aside class="botStats"></aside>
     </div>

@@ -62,7 +62,27 @@
   border-radius: 3px;
 }
 
+.messages--wrapper {
+  position: relative;
+
+  header {
+    height: 50px;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}
+
 .messages {
+  position: absolute;
+  height: calc(100% - 100px);
+  width: 100%;
+  top: 50px;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   flex: 1;
