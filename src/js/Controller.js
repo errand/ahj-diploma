@@ -32,10 +32,13 @@ export default class Controller {
   onSendButtonClick(e) {
     e.preventDefault();
     if (this.ui.texarea.value.trim() !== '') {
-      this.methods.createTextPost({ text: this.ui.texarea.value, host: true }, request => {
+      const text = this.ui.texarea.value;
+      let type = 'text';
+      if (this.checkTextForLinks(text)) type = 'link';
+      this.methods.createTextPost({ text, type, host: true }, request => {
         this.ui.insertPostToDOM(request.response);
         this.ui.texarea.value = '';
-        this.ui.texarea.style.height = '';
+        this.ui.texarea.style.height = 'auto';
       });
     }
   }
@@ -48,7 +51,12 @@ export default class Controller {
     });
   }
 
-  countPostTypes() {
-
+  checkTextForLinks(text) {
+    const linkRule = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g;
+    const emailRule = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
+    if (text.match(linkRule) || text.match(emailRule)) {
+      return true;
+    }
+    return false;
   }
 }

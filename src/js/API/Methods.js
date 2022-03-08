@@ -1,10 +1,10 @@
 import fetcher from './fetcher';
 
 export default class Methods {
-  getAllPosts(callback) {
+  getAllPosts(callback, start = '1', limit = '10') {
     const options = {
       method: 'GET',
-      query: 'api/messages/all',
+      query: `api/messages/all?start=${start}&limit=${limit}`,
       callback,
     };
 
