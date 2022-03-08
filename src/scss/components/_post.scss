@@ -11,9 +11,14 @@
     align-self: flex-end;
   }
 
-  .content {
-    padding-right: 1rem;
-    padding-left: 1rem;
+  .content{
+    margin-bottom: 0.5rem;
+  }
+
+  .datetime {
+    font-size: 0.8rem;
+    color: $grey-200;
+    text-align: right;
   }
 
   &.show {

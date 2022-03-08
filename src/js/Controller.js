@@ -47,4 +47,8 @@ export default class Controller {
       this.socket.init();
     });
   }
+
+  countPostTypes() {
+
+  }
 }
