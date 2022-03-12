@@ -15,6 +15,7 @@ export default class Controller {
   addEventListeners() {
     this.ui.texarea.addEventListener('input', e => this.onInputText(e));
     this.ui.sendButton.addEventListener('click', e => this.onSendButtonClick(e));
+    this.ui.messages.addEventListener('scroll', e => this.onMessagesScroll(e));
   }
 
   onInputText(e) {
@@ -39,6 +40,25 @@ export default class Controller {
         this.ui.insertPostToDOM(request.response);
         this.ui.texarea.value = '';
         this.ui.texarea.style.height = 'auto';
+      });
+    }
+  }
+
+  onMessagesScroll(e) {
+    this.page = 0;
+    const scroll = e.target.scrollTop;
+    console.log(scroll);
+    if (scroll === 0) {
+      this.page = -1;
+
+      this.methods.countAllPosts(request => {
+        this.methods.getAllPosts(req => {
+          req.response.forEach(post => {
+            if (!this.ui.messages.querySelector(`[data-id="${post.id}"]`)) {
+              this.ui.insertPostToDOM(post);
+            }
+          });
+        }, this.page);
       });
     }
   }

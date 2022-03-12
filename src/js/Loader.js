@@ -7,6 +7,9 @@ export default class Loader {
     const loader = document.createElement('div');
     loader.id = 'loader';
     this.container.appendChild(loader);
+    setTimeout(() => {
+      loader.classList.add('show');
+    }, 350);
   }
 
   stop() {

@@ -5,8 +5,8 @@ export default class Ui {
   constructor() {
     this.container = null;
     this.messages = null;
-    this.chatSection = null;
     this.methods = new Methods();
+    this.messagesLimit = 5;
   }
 
   bindToDOM(container) {
@@ -24,8 +24,12 @@ export default class Ui {
   drawUi() {
     this.checkBinding();
     this.texarea.setAttribute('style', `height:${this.texarea.scrollHeight}px;overflow-y:hidden;`);
-    this.methods.getAllPosts(request => {
-      request.response.forEach(post => this.insertPostToDOM(post));
+
+    this.methods.countAllPosts(request => {
+      console.log(request.response - this.messagesLimit);
+      this.methods.getAllPosts(req => {
+        req.response.forEach(post => this.insertPostToDOM(post));
+      }, request.response - this.messagesLimit, request.response);
     });
   }
 

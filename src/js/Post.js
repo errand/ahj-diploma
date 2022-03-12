@@ -27,7 +27,7 @@ export default class Post {
   create() {
     if (this.data) {
       const result = this.template(this.data);
-      setTimeout(() => result.classList.add('show'), 350);
+      setTimeout(() => result.classList.add('show'), 0);
 
       return result;
     }
