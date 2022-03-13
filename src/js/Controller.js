@@ -1,3 +1,5 @@
+import { fromEvent } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import Methods from './API/Methods';
 import Socket from './API/Socket';
 
@@ -10,6 +12,22 @@ export default class Controller {
   init() {
     this.ui.drawUi();
     this.addEventListeners();
+    this.draggable();
+  }
+
+  draggable() {
+    const draggableElement = this.ui.messages;
+
+    const mouseDown$ = fromEvent(draggableElement, 'mousedown');
+    const mouseMove$ = fromEvent(draggableElement, 'mousemove');
+    const mouseUp$ = fromEvent(draggableElement, 'mouseup');
+
+    const dragStart$ = mouseDown$;
+    const dragMove$ = dragStart$.pipe( // всякий раз, когда мы нажимаем на кнопку мышку
+      switchMap(() => mouseMove$).pipe( // каждый раз, когда мы перемещаем курсор
+        takeUntil(mouseUp$), // но только пока мы не отпустим кнопку мыши
+      ),
+    );
   }
 
   addEventListeners() {

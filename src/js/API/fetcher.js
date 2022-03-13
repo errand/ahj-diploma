@@ -22,8 +22,8 @@ function fetcher(options) {
       return of(error);
     }),
   ).subscribe((response) => {
-    options.callback(response);
     loader.stop();
+    options.callback(response);
   });
 }
 
