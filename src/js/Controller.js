@@ -45,20 +45,21 @@ export default class Controller {
   }
 
   onMessagesScroll(e) {
-    this.page = 0;
     const scroll = e.target.scrollTop;
-    console.log(scroll);
-    if (scroll === 0) {
-      this.page = -1;
+    if (scroll === 0 && this.ui.start >= 0) {
+      this.ui.start -= this.ui.messagesLimit;
+      this.ui.end -= this.ui.messagesLimit;
 
+      if (this.ui.start < 0) { this.ui.start = 0; }
+      if (this.ui.end < 0) { this.ui.end = this.ui.messagesLimit; }
       this.methods.countAllPosts(request => {
         this.methods.getAllPosts(req => {
           req.response.forEach(post => {
             if (!this.ui.messages.querySelector(`[data-id="${post.id}"]`)) {
-              this.ui.insertPostToDOM(post);
+              this.ui.insertPostToDOM(post, true);
             }
           });
-        }, this.page);
+        }, this.ui.start, this.ui.end);
       });
     }
   }

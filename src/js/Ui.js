@@ -7,6 +7,8 @@ export default class Ui {
     this.messages = null;
     this.methods = new Methods();
     this.messagesLimit = 5;
+    this.start = null;
+    this.end = null;
   }
 
   bindToDOM(container) {
@@ -26,18 +28,24 @@ export default class Ui {
     this.texarea.setAttribute('style', `height:${this.texarea.scrollHeight}px;overflow-y:hidden;`);
 
     this.methods.countAllPosts(request => {
-      console.log(request.response - this.messagesLimit);
+      this.start = request.response - this.messagesLimit;
+      this.end = request.response;
       this.methods.getAllPosts(req => {
         req.response.forEach(post => this.insertPostToDOM(post));
-      }, request.response - this.messagesLimit, request.response);
+      }, this.start, this.end);
     });
   }
 
-  insertPostToDOM(obj) {
+  insertPostToDOM(obj, prepend = false) {
     const post = new Post(obj);
     const created = post.create();
-    this.messages.appendChild(created);
-    this.messages.scrollTop = this.messages.scrollHeight - created.clientHeight;
+    if (prepend) {
+      this.messages.prepend(created);
+      this.messages.scrollTop = created.clientHeight;
+    } else {
+      this.messages.appendChild(created);
+      this.messages.scrollTop = this.messages.scrollHeight - created.clientHeight;
+    }
   }
 
   checkBinding() {
