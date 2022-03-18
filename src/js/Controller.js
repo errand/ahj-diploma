@@ -1,5 +1,5 @@
 import { fromEvent } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil, map } from 'rxjs/operators';
 import Methods from './API/Methods';
 import Socket from './API/Socket';
 
@@ -12,22 +12,39 @@ export default class Controller {
   init() {
     this.ui.drawUi();
     this.addEventListeners();
-    this.draggable();
+    this.draggableFunc();
   }
 
-  draggable() {
-    const draggableElement = this.ui.messages;
+  draggableFunc() {
+    const draggableElement = this.ui.container;
 
-    const mouseDown$ = fromEvent(draggableElement, 'mousedown');
-    const mouseMove$ = fromEvent(draggableElement, 'mousemove');
-    const mouseUp$ = fromEvent(draggableElement, 'mouseup');
+    const draggable = (el) => {
+      const dragStart$ = fromEvent(draggableElement, 'mousedown');
+      const moveDrag$ = fromEvent(document, 'mousemove');
+      const endDrag$ = fromEvent(draggableElement, 'mouseup');
 
-    const dragStart$ = mouseDown$;
-    const dragMove$ = dragStart$.pipe( // всякий раз, когда мы нажимаем на кнопку мышку
-      switchMap(() => mouseMove$).pipe( // каждый раз, когда мы перемещаем курсор
-        takeUntil(mouseUp$), // но только пока мы не отпустим кнопку мыши
-      ),
-    );
+      return dragStart$.pipe(
+        switchMap(event => {
+          event.stopPropagation();
+          const diffX = draggableElement.offsetLeft - event.clientX;
+          const diffY = draggableElement.offsetTop - event.clientY;
+          return moveDrag$.pipe(
+            map(event => {
+              const { clientX, clientY } = event;
+              return {
+                x: clientX + diffX,
+                y: clientY + diffY,
+              };
+            }),
+            takeUntil(endDrag$),
+          );
+        }),
+      );
+    };
+
+    draggable(draggableElement).subscribe(coord => {
+      console.log(coord);
+    });
   }
 
   addEventListeners() {
