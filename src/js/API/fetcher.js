@@ -11,11 +11,18 @@ function fetcher(options) {
   const requestUrl = `${URL}/${options.query}`;
   loader.start();
 
+  let body = null;
+  if (options.type === 'file') {
+    body = options.data;
+  } else {
+    body = JSON.stringify(options.data);
+  }
+
   const request = ajax({
     url: requestUrl,
     method: options.method,
-    headers: { 'Content-Type': 'application/json' },
-    body: options.data ? JSON.stringify(options.data) : null,
+    headers: options.type === 'file' ? { 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryyEmKNDsBKjB7QEqu' } : { 'Content-Type': 'application/json' },
+    body,
   }).pipe(
     catchError(error => {
       console.log('error: ', error);

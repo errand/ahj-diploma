@@ -1,0 +1,27 @@
+[data-id="dropzone"] {
+  &.dragenter {
+    header, .messages, footer {
+      opacity: 0.5;
+    }
+
+
+  }
+
+  #draggablePlaceholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    background-color: #fff;
+    pointer-events: none;
+    font-size: 3rem;
+    color: $grey-100;
+    border-radius: 3px;
+    box-shadow: 0 0 10px $grey-100;
+    content: 'Drop Here'
+  }
+}

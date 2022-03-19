@@ -1,5 +1,7 @@
-import { fromEvent } from 'rxjs';
-import { switchMap, takeUntil, map } from 'rxjs/operators';
+import { defer, fromEvent, merge } from 'rxjs';
+import {
+  switchMap, takeUntil, mergeMap, tap, first,
+} from 'rxjs/operators';
 import Methods from './API/Methods';
 import Socket from './API/Socket';
 
@@ -16,34 +18,68 @@ export default class Controller {
   }
 
   draggableFunc() {
-    const draggableElement = this.ui.container;
+    const draggableElement = this.ui.container.querySelector('[data-id="dropzone"]');
+    this._placeholder = document.createElement('div');
+    this._placeholder.id = 'draggablePlaceholder';
+    this._placeholder.innerText = 'Drop files here';
 
-    const draggable = (el) => {
-      const dragStart$ = fromEvent(draggableElement, 'mousedown');
-      const moveDrag$ = fromEvent(document, 'mousemove');
-      const endDrag$ = fromEvent(draggableElement, 'mouseup');
+    const dragEnter$ = defer(() => fromEvent(draggableElement, 'dragenter').pipe(
+      tap(event => {
+        draggableElement.classList.add('dragenter');
+        draggableElement.appendChild(this._placeholder);
+      }),
+    ));
+    const dragLeave$ = defer(() => fromEvent(draggableElement, 'dragleave').pipe(
+      tap(event => {
+        console.log('leave');
+        draggableElement.classList.remove('dragenter');
+        this._placeholder.remove();
+      }),
+    ));
+    const dragEnd$ = defer(() => fromEvent(draggableElement, 'dragend').pipe(
+      tap(event => {
+        this._placeholder.remove();
+        draggableElement.classList.remove('dragenter');
+      }),
+    ));
 
-      return dragStart$.pipe(
-        switchMap(event => {
-          event.stopPropagation();
-          const diffX = draggableElement.offsetLeft - event.clientX;
-          const diffY = draggableElement.offsetTop - event.clientY;
-          return moveDrag$.pipe(
-            map(event => {
-              const { clientX, clientY } = event;
-              return {
-                x: clientX + diffX,
-                y: clientY + diffY,
-              };
-            }),
-            takeUntil(endDrag$),
-          );
-        }),
-      );
-    };
+    const dragOver$ = defer(() => fromEvent(draggableElement, 'dragover').pipe(
+      tap(event => {
+        event.preventDefault();
+        draggableElement.classList.add('dragenter');
+        draggableElement.appendChild(this._placeholder);
+      }),
+    ));
 
-    draggable(draggableElement).subscribe(coord => {
-      console.log(coord);
+    const drop$ = defer(() => fromEvent(draggableElement, 'drop').pipe(
+      tap(event => {
+        event.preventDefault();
+        this._placeholder.remove();
+        draggableElement.classList.remove('dragenter');
+        const dt = event.dataTransfer;
+        const { files } = dt;
+        this.handleFiles(files);
+      }),
+    ));
+
+    const dragAndDrop$ = dragEnter$.pipe(
+      mergeMap(() => dragOver$),
+      switchMap(() => merge(
+        dragLeave$.pipe(first()),
+        drop$.pipe(takeUntil(dragEnd$)),
+      )),
+    );
+
+    dragAndDrop$.subscribe();
+  }
+
+  handleFiles(files) {
+    const formData = new FormData();
+    ([...files]).forEach(file => {
+      formData.append('file', file);
+      this.methods.uploadFiles({ formData, type: 'file', host: true }, request => {
+        console.log(request);
+      });
     });
   }
 
@@ -71,7 +107,7 @@ export default class Controller {
       const text = this.ui.texarea.value;
       let type = 'text';
       if (this.checkTextForLinks(text)) type = 'link';
-      this.methods.createTextPost({ text, type, host: true }, request => {
+      this.methods.createPost({ text, type, host: true }, request => {
         this.ui.insertPostToDOM(request.response);
         this.ui.texarea.value = '';
         this.ui.texarea.style.height = 'auto';

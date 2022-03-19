@@ -32,7 +32,7 @@ export default class Methods {
     return fetcher(options);
   }
 
-  createTextPost(data, callback) {
+  createPost(data, callback) {
     const options = {
       method: 'POST',
       query: 'api/messages/add',
@@ -43,10 +43,11 @@ export default class Methods {
     return fetcher(options);
   }
 
-  getIndex(name, callback) {
+  uploadFiles(data, callback) {
     const options = {
-      method: 'GET',
-      query: `method=getUserByName&name=${name}`,
+      method: 'POST',
+      query: 'api/files/add',
+      data,
       callback,
     };
 
