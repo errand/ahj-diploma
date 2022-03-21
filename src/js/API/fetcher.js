@@ -13,8 +13,8 @@ function fetcher(options) {
       headers = { 'Content-Type': 'multipart/form-data; multipart/form-data; boundary=----WebKitFormBoundaryyEmKNDsBKjB7QEqu' };
     }
   }
-  const URL = 'http://localhost:7070';
-  // const URL = 'https://errand-ahj-sse-ws-chat.herokuapp.com/';
+  // const URL = 'http://localhost:7070';
+  const URL = 'https://errand-ahj-diploma.herokuapp.com/';
   const requestUrl = `${URL}/${options.query}`;
   loader.start();
 
@@ -24,10 +24,7 @@ function fetcher(options) {
     headers,
     body: options.data ? JSON.stringify(options.data) : null,
   }).pipe(
-    catchError(error => {
-      console.log('error: ', error);
-      return of(error);
-    }),
+    catchError(error => of(error)),
   ).subscribe((response) => {
     loader.stop();
     options.callback(response);

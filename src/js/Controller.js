@@ -74,13 +74,13 @@ export default class Controller {
   }
 
   handleFiles(files) {
-    console.log(files);
+    // console.log(files);
     const formData = new FormData();
     ([...files]).forEach(file => {
       formData.append(file.name, file);
     });
     this.methods.createPost({ text: formData, type: 'file', host: true }, request => {
-      console.log(request.response);
+      // console.log(request.response);
     });
   }
 
