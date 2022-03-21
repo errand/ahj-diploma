@@ -42,15 +42,4 @@ export default class Methods {
 
     return fetcher(options);
   }
-
-  uploadFiles(data, callback) {
-    const options = {
-      method: 'POST',
-      query: 'api/files/add',
-      data,
-      callback,
-    };
-
-    return fetcher(options);
-  }
 }

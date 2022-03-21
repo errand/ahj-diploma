@@ -31,7 +31,6 @@ export default class Controller {
     ));
     const dragLeave$ = defer(() => fromEvent(draggableElement, 'dragleave').pipe(
       tap(event => {
-        console.log('leave');
         draggableElement.classList.remove('dragenter');
         this._placeholder.remove();
       }),
@@ -56,9 +55,6 @@ export default class Controller {
         event.preventDefault();
         this._placeholder.remove();
         draggableElement.classList.remove('dragenter');
-        const dt = event.dataTransfer;
-        const { files } = dt;
-        this.handleFiles(files);
       }),
     ));
 
@@ -70,16 +66,21 @@ export default class Controller {
       )),
     );
 
-    dragAndDrop$.subscribe();
+    dragAndDrop$.subscribe(e => {
+      const dt = e.dataTransfer;
+      const { files } = dt;
+      this.handleFiles(files);
+    });
   }
 
   handleFiles(files) {
+    console.log(files);
     const formData = new FormData();
     ([...files]).forEach(file => {
-      formData.append('file', file);
-      this.methods.uploadFiles({ formData, type: 'file', host: true }, request => {
-        console.log(request);
-      });
+      formData.append(file.name, file);
+    });
+    this.methods.createPost({ text: formData, type: 'file', host: true }, request => {
+      console.log(request.response);
     });
   }
 
